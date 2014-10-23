@@ -1,0 +1,201 @@
+
+
+* terminology
+** tree 
+** working directory == working tree
+** index/cached
+
+# object
+# API
+## add && commot
+### explain how it work
+## diff && log
+## reset & checkout
+### explain how it work
+### scenarios
+## merge && rebase
+### explain how it work
+### scenarios
+# Advance topics
+## rerere
+
+#########################
+# object
+#########################
+* working tree/ index/ HEAD
+
+* git directoty
+.
+├── COMMIT_EDITMSG
+├── HEAD
+├── config
+├── description
+├── hooks
+│   ├── applypatch-msg.sample
+│   ├── commit-msg.sample
+│   ├── post-update.sample
+│   ├── pre-applypatch.sample
+│   ├── pre-commit.sample
+│   ├── pre-push.sample
+│   ├── pre-rebase.sample
+│   ├── prepare-commit-msg.sample
+│   └── update.sample
+├── index
+├── info
+│   └── exclude
+├── logs
+│   ├── HEAD
+│   └── refs
+│       └── heads
+│           └── master
+├── objects
+│   ├── 08
+│   │   └── 585692ce06452da6f82ae66b90d98b55536fca
+│   ├── 78
+│   │   └── 981922613b2afb6025042ff6bd878ac1994e85
+│   ├── b8
+│   │   └── c1edc3b7f3cfc3275dcc77de70bae8861b28f1
+│   ├── info
+│   └── pack
+└── refs
+    ├── heads
+    │   └── master
+    └── tags
+** refs, which contains references to objects.
+*** heads, references to any number of different 'heads' of development (aka 'branches')
+*** tags
+** objects, which will contain all the objects of your project, which incudes
+*** The hash in this case is 3b18e512dba79e4c8300dd08aeb37f8e728b8dad. The 160 bits of an SHA1 hash correspond to 20 bytes, which takes 40 bytes of hexadecimal to display, so the content is stored as .git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad. Git inserts a / after the first two digits to improve filesystem efficiency. (Some filesystems slow down if you put too many files in the same directory; making the first byte of the SHA1 into a directory is an easy way to create a fixed, 256-way partitioning of the namespace for all possible objects with an even distribution.)
+*** blob
+*** tree
+*** commit
+*** ???
+** index - cache target
+The git index goes by many names. But they all refer to the same thing. Some of the names you may have heard:
+   * Index
+   * Cache
+   * Directory cache
+   * Current directory cache
+   * Staging area
+   * Staged files
+** HEAD
+
+
+* Diagram
+** Draw a diagram to describe relation among HEAD/branch/commit/tree/blob/index
+
+* commit
+** write tree
+** commit tree 
+* git hook
+**How to run gtest before commit?
+
+#########################
+# API
+#########################
+* API level
+** The core Git is often called "plumbing"
+** prettier user interfaces on top of it called "porcelain"
+
+* plumbing API introduction
+** introduce API that I am going to use in this presentation
+** cat-file 
+*** cat-file -t: show type of an object
+*** cat-file -p: show content of an object 
+** ls-files - reveal index content
+*** ls-files --stage
+*** ls-files --unmerged
+** ls-tree : reveal tree content
+** git ls-tree -r SHA: recurse into subtree
+
+* -- patch
+** git add --patch 
+** git reset --patch
+
+* git reset
+** reset HEAD
+*** git reset --soft
+*** git reset --mixed
+*** git reset --hard
+** reset path
+*** git reset no-soft-hard-mixed
+*** change index only
+*** two main usages
+**** unstage
+**** squash commint on current branch
+
+* difference between reset and checkout
+** commit level: tree-ish
+*** reset change what branch point to
+*** checkout change what HEAD point to
+** file level
+*** git reset -- files / git checkout -- files
+** checkout == reset --hard
+* http://git-scm.com/blog/2011/07/11/reset.html
+
+* merge and rebase
+** tree way merge - HEAD/MERGE_HEAD/BASE
+** fix commit -> add -> commit
+** abort
+**** git reset --hard HEAD
+**** git reset --hard ORIG_HEAD
+
+* git-command
+** tree-ish
+http://stackoverflow.com/questions/4044368/what-does-tree-ish-mean-in-git
+
+* git rerere
+** http://git-scm.com/blog/2010/03/08/rerere.html
+
+* remote repository
+** In normal git clone use, the local, development branches of the original repository, stored within refs/heads/, become remote-tracking branches in the new clone under refs/remotes/. Remote-tracking branches within refs/remotes/ in the original repository are not cloned
+
+* advance topics
+** git replace: http://git-scm.com/blog/2010/03/17/replace.html
+
+* How to rebuild index
+** $ git read-tree --reset HEAD ＋ ＄git update-index --refresh
+** $ git reset
+
+* diff
+** "git diff-files -p" == "git diff": compare index against working directory
+** "git diff-index -p HEAD" == "git diff HEAD": compare a tree againt working directory
+** "git diff-index --cached -p HEAD": compare a tree against index
+** "git diff-tree -p HEAD [HEAD^]" "git diff-tree -p commit_1 commit_2": compare the diff of two trees
+
+
+#########################
+# Note
+#########################
+* iterate objects
+** ls .git/objects/??/*
+
+Git’s index doesn’t contain any file content; it simply tracks what you want to commit. When you run git commit, Git checks the index rather than your working directory to discover what to commit.
+Staging a file is also called caching a file[10] or “putting a file in the index.”
+
+Scenario of using reset —hard —soft —mixed(default) —merge —keep
+
+Add/remove/mv/rename file and change content, what’s the diff in git directory?
+  add/remove/mv/rename - new tree node generate, root tree always be create again
+  change content of a file - new blob create
+
+There are basically three different namespaces represented in refs/: refs/heads/ref for your local branches, refs/remotes/ref for your remote tracking branches, and refs/tags/ref for your tags.
+Explain semantic in diff
+
+how to use reset to move HEAD of current branch around
+
+reset checkout revert - 
+  checkout - branch switch/ extract file from object store
+  reset - commit switch in graph, and change index(hard/ mixed) + working directory(hard) 
+
+ The -s option to git ls-files shows all the files with all stages. If you want to see only the conflicted files, use the -u option instead. 
+
+http://www.gitguys.com/topics/whats-the-deal-with-the-git-index/
+
+http://git-scm.com/blog
+ reset/checkout
+
+Understanding the Index
+http://alblue.bandlem.com/2011/10/git-tip-of-week-understanding-index.html
+
+
