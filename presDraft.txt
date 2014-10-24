@@ -1,5 +1,5 @@
 
-
+CJKu: 我有疑問, 關於 git am xxx.patch 失敗後，git status, git diff 都沒有資訊讓你知道那裡apply 不起來. 最後還是用 patch comment 去 apply.
 * terminology
 ** tree 
 ** working directory == working tree
@@ -165,6 +165,21 @@ http://stackoverflow.com/questions/4044368/what-does-tree-ish-mean-in-git
 ** Create a sample to demostrate local-remote mapping
 ** one direction relation：The relationship between a repository that contains a remote reference (the referrer) and that remote repository (the referee) is asymmetric. A remote always points in one direction from referrer to referee. The referee has no idea that some other repository points to it. Another way to say this is as follows: a clone knows where its upstream repository is, but the upstream repository doesn’t know where its clones are.
 ** In normal git clone use, the local, development branches of the original repository, stored within refs/heads/, become remote-tracking branches in the new clone under refs/remotes/. Remote-tracking branches within refs/remotes/ in the original repository are not cloned
+** git pull
+*** step 1: fetch
+*** git fetch origin refs/heads/master:refs/remotes/master
+*** git fetch origin refs/heads/*:refs/remotes/*
+*** git fetch origin
+**** use remote / fetch=refspec
+** git checkout
+*** git checkout master
+*** git checkout --track master
+*** git checkout --track origin/master
+*** git checkout mymaster --track origin/master
+*** git fetch
+*** git fetch --all
+*** setp 2: merge(or rebase)
+*** 
 ** remote repository - local/current repository
 ** remote = short name of URL
 ** Remote-tracking branches are associated with a remote and have the specific purpose of following the changes of each branch in that remote repository.
@@ -172,6 +187,10 @@ http://stackoverflow.com/questions/4044368/what-does-tree-ish-mean-in-git
 ** Any local, nontracking branch is usually generically called a topic or development branch.
 ** Finally, to complete the namespaces, a remote branch is a branch located in a nonlocal, remote repository. It is likely an upstream source for a remote-tracking branch.
 ** refspec maps branch names in the remote repository to branch names within your local repository.
+** git push
+*** $ git push upstream new_dev
+*** $ git push upstream new_dev:new_dev
+*** $ git push upstream new_dev:refs/heads/new_dev
 
 * advance topics
 ** git replace: http://git-scm.com/blog/2010/03/17/replace.html
