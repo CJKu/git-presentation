@@ -62,8 +62,10 @@
     │   └── master
     └── tags
 ** refs, which contains references to objects.
-*** heads, references to any number of different 'heads' of development (aka 'branches')
-*** tags
+*** three different namespaces represented 
+**** refs/heads/ref for your local branches
+**** refs/remotes/ref for your remote tracking branches
+**** refs/tags/ref for your tags
 ** objects, which will contain all the objects of your project, which incudes
 *** The hash in this case is 3b18e512dba79e4c8300dd08aeb37f8e728b8dad. The 160 bits of an SHA1 hash correspond to 20 bytes, which takes 40 bytes of hexadecimal to display, so the content is stored as .git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad. Git inserts a / after the first two digits to improve filesystem efficiency. (Some filesystems slow down if you put too many files in the same directory; making the first byte of the SHA1 into a directory is an easy way to create a fixed, 256-way partitioning of the namespace for all possible objects with an even distribution.)
 *** blob
@@ -134,11 +136,23 @@ The git index goes by many names. But they all refer to the same thing. Some of 
 * http://git-scm.com/blog/2011/07/11/reset.html
 
 * merge and rebase
+** merge
+** fastforward
 ** tree way merge - HEAD/MERGE_HEAD/BASE
 ** fix commit -> add -> commit
 ** abort
 **** git reset --hard HEAD
 **** git reset --hard ORIG_HEAD
+**** git reset --merge ORIG_HEAD
+**** many use case in man: http://git-scm.com/docs/git-reset
+** rebase
+*** conflict
+**** fix conflict
+**** add
+**** git rebase --continue
+*** abort
+**** git rebase --abort
+*** interactive rebase
 
 * git-command
 ** tree-ish
@@ -148,7 +162,16 @@ http://stackoverflow.com/questions/4044368/what-does-tree-ish-mean-in-git
 ** http://git-scm.com/blog/2010/03/08/rerere.html
 
 * remote repository
+** Create a sample to demostrate local-remote mapping
+** one direction relation：The relationship between a repository that contains a remote reference (the referrer) and that remote repository (the referee) is asymmetric. A remote always points in one direction from referrer to referee. The referee has no idea that some other repository points to it. Another way to say this is as follows: a clone knows where its upstream repository is, but the upstream repository doesn’t know where its clones are.
 ** In normal git clone use, the local, development branches of the original repository, stored within refs/heads/, become remote-tracking branches in the new clone under refs/remotes/. Remote-tracking branches within refs/remotes/ in the original repository are not cloned
+** remote repository - local/current repository
+** remote = short name of URL
+** Remote-tracking branches are associated with a remote and have the specific purpose of following the changes of each branch in that remote repository.
+** A local-tracking branch is paired with a remote-tracking branch. It is a form of integration branch that collects both the changes from your local development and the changes from the remote-tracking branch.
+** Any local, nontracking branch is usually generically called a topic or development branch.
+** Finally, to complete the namespaces, a remote branch is a branch located in a nonlocal, remote repository. It is likely an upstream source for a remote-tracking branch.
+** refspec maps branch names in the remote repository to branch names within your local repository.
 
 * advance topics
 ** git replace: http://git-scm.com/blog/2010/03/17/replace.html
@@ -163,6 +186,15 @@ http://stackoverflow.com/questions/4044368/what-does-tree-ish-mean-in-git
 ** "git diff-index --cached -p HEAD": compare a tree against index
 ** "git diff-tree -p HEAD [HEAD^]" "git diff-tree -p commit_1 commit_2": compare the diff of two trees
 
+#########################
+# Silk
+#########################
+* clone gecko-dev
+** git clone --origin mozilla-origin https://github.com/mozilla/gecko-dev.git
+** config
+*** fetch = +refs/heads/*:refs/remotes/origin/*
+* add silk repository
+** git remote add silk-origin https://github.com/JerryShih/gecko-dev.git
 
 #########################
 # Note
