@@ -5,6 +5,8 @@ CJKu: 我有疑問, 關於 git am xxx.patch 失敗後，git status, git diff 都
 ** working directory == working tree
 ** index/cached
 
+http://felipec.wordpress.com/2011/01/16/mercurial-vs-git-its-all-in-the-branches/
+
 # object
 # API
 ## add && commot
